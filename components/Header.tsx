@@ -1,8 +1,8 @@
-import { useRouter } from 'next/router'
-import Link from 'next/link'
+import { useRouter } from 'next/router';
+import Link from 'next/link';
 
-export default function Header() {
-  const { pathname } = useRouter()
+const Header = () => {
+  const { pathname } = useRouter();
 
   return (
     <header>
@@ -16,6 +16,9 @@ export default function Header() {
         <a className={pathname === '/client-only' ? 'is-active' : ''}>
           Client-Only
         </a>
+      </Link>
+      <Link href="/original">
+        <a className={pathname === '/original' ? 'is-active' : ''}>Original</a>
       </Link>
       <style jsx>{`
         header {
@@ -31,5 +34,7 @@ export default function Header() {
         }
       `}</style>
     </header>
-  )
-}
+  );
+};
+
+export default Header;
