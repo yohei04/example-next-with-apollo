@@ -110,6 +110,23 @@ export type MutationVotePostArgs = {
   id: Scalars['String'];
 };
 
+export type AllPostsQueryVariables = Exact<{
+  first: Scalars['Int'];
+  skip: Scalars['Int'];
+}>;
+
+
+export type AllPostsQuery = (
+  { __typename?: 'Query' }
+  & { allPosts: Array<(
+    { __typename?: 'Post' }
+    & Pick<Post, 'id' | 'title' | 'votes' | 'url' | 'createdAt'>
+  )>, _allPostsMeta: (
+    { __typename?: '_QueryMeta' }
+    & Pick<_QueryMeta, 'count'>
+  ) }
+);
+
 export type AllUsersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -122,6 +139,47 @@ export type AllUsersQuery = (
 );
 
 
+export const AllPostsDocument = gql`
+    query AllPosts($first: Int!, $skip: Int!) {
+  allPosts(orderBy: {createdAt: desc}, first: $first, skip: $skip) {
+    id
+    title
+    votes
+    url
+    createdAt
+  }
+  _allPostsMeta {
+    count
+  }
+}
+    `;
+
+/**
+ * __useAllPostsQuery__
+ *
+ * To run a query within a React component, call `useAllPostsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAllPostsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAllPostsQuery({
+ *   variables: {
+ *      first: // value for 'first'
+ *      skip: // value for 'skip'
+ *   },
+ * });
+ */
+export function useAllPostsQuery(baseOptions: Apollo.QueryHookOptions<AllPostsQuery, AllPostsQueryVariables>) {
+        return Apollo.useQuery<AllPostsQuery, AllPostsQueryVariables>(AllPostsDocument, baseOptions);
+      }
+export function useAllPostsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AllPostsQuery, AllPostsQueryVariables>) {
+          return Apollo.useLazyQuery<AllPostsQuery, AllPostsQueryVariables>(AllPostsDocument, baseOptions);
+        }
+export type AllPostsQueryHookResult = ReturnType<typeof useAllPostsQuery>;
+export type AllPostsLazyQueryHookResult = ReturnType<typeof useAllPostsLazyQuery>;
+export type AllPostsQueryResult = Apollo.QueryResult<AllPostsQuery, AllPostsQueryVariables>;
 export const AllUsersDocument = gql`
     query AllUsers {
   allUsers {
