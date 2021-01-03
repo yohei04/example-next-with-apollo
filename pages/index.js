@@ -17,18 +17,18 @@ const IndexPage = () => (
   </App>
 )
 
-export async function getStaticProps() {
-  const apolloClient = initializeApollo()
+// export async function getStaticProps() {
+//   const apolloClient = initializeApollo()
 
-  await apolloClient.query({
-    query: ALL_POSTS_QUERY,
-    variables: allPostsQueryVars,
-  })
+//   await apolloClient.query({
+//     query: ALL_POSTS_QUERY,
+//     variables: allPostsQueryVars,
+//   })
 
-  return addApolloState(apolloClient, {
-    props: {},
-    revalidate: 1,
-  })
-}
+//   return addApolloState(apolloClient, {
+//     props: {},
+//     revalidate: 1,
+//   })
+// }
 
 export default IndexPage
