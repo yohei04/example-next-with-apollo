@@ -134,7 +134,7 @@ export type AllUsersQuery = (
   { __typename?: 'Query' }
   & { allUsers: Array<(
     { __typename?: 'User' }
-    & Pick<User, 'id' | 'firstName'>
+    & Pick<User, 'id' | 'firstName' | 'lastName' | 'email' | 'createdAt' | 'updatedAt'>
   )> }
 );
 
@@ -185,6 +185,10 @@ export const AllUsersDocument = gql`
   allUsers {
     id
     firstName
+    lastName
+    email
+    createdAt
+    updatedAt
   }
 }
     `;

@@ -2,5 +2,9 @@ query AllUsers {
   allUsers {
     id
     firstName
+    lastName
+    email
+    createdAt
+    updatedAt
   }
 }
