@@ -1,4 +1,9 @@
-import { gql, useMutation } from '@apollo/client'
+import { gql, useMutation } from '@apollo/client';
+
+interface PostUpvoterProps {
+  votes: any;
+  id: any;
+}
 
 const UPDATE_POST_MUTATION = gql`
   mutation votePost($id: String!) {
@@ -8,10 +13,10 @@ const UPDATE_POST_MUTATION = gql`
       __typename
     }
   }
-`
+`;
 
-export default function PostUpvoter({ votes, id }) {
-  const [updatePost] = useMutation(UPDATE_POST_MUTATION)
+const PostUpvoter = ({ votes, id }: PostUpvoterProps) => {
+  const [updatePost] = useMutation(UPDATE_POST_MUTATION);
 
   const upvotePost = () => {
     updatePost({
@@ -26,8 +31,8 @@ export default function PostUpvoter({ votes, id }) {
           votes: votes + 1,
         },
       },
-    })
-  }
+    });
+  };
 
   return (
     <button onClick={() => upvotePost()}>
@@ -53,5 +58,7 @@ export default function PostUpvoter({ votes, id }) {
         }
       `}</style>
     </button>
-  )
-}
+  );
+};
+
+export default PostUpvoter;
