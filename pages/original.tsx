@@ -1,10 +1,18 @@
 import React from 'react';
 import { GetStaticProps } from 'next';
 import Link from 'next/link';
-import { AllUsersDocument, User } from '../generated/graphql';
+import { AllUsersDocument, Post, User } from '../generated/graphql';
 import { addApolloState, initializeApollo } from '../lib/apolloClient';
+import { ALL_POSTS_QUERY, allPostsQueryVars } from '../components/PostList';
+import PostUpvoter from '../components/PostUpvoter';
 
-const Original = ({ allUsers }: { allUsers: User[] }) => {
+const Original = ({
+  allPosts,
+  allUsers,
+}: {
+  allPosts: Post[];
+  allUsers: User[];
+}) => {
   return (
     <div>
       <Link href="/">
@@ -12,13 +20,15 @@ const Original = ({ allUsers }: { allUsers: User[] }) => {
       </Link>
       <section>
         <ul>
-          {allUsers.map((user) => (
+          {allUsers.slice(18).map((user) => (
             <>
+              <p>User</p>
               <li>{user.firstName}</li>
               <li>{user.email}</li>
             </>
           ))}
-          {/* {data?.allPosts.map((post, index) => (
+          <br />
+          {allPosts.map((post, index) => (
             <li key={post.id}>
               <div>
                 <span>{index + 1}. </span>
@@ -26,7 +36,7 @@ const Original = ({ allUsers }: { allUsers: User[] }) => {
                 <PostUpvoter id={post.id} votes={post.votes} />
               </div>
             </li>
-          ))} */}
+          ))}
         </ul>
       </section>
     </div>
@@ -42,8 +52,16 @@ export const getStaticProps: GetStaticProps = async (_context) => {
     query: AllUsersDocument,
   });
 
+  const {
+    data: { allPosts },
+  } = await apolloClient.query({
+    query: ALL_POSTS_QUERY,
+    variables: allPostsQueryVars,
+  });
+
   return addApolloState(apolloClient, {
     props: {
+      allPosts,
       allUsers,
     },
     revalidate: 1,
