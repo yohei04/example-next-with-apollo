@@ -11,14 +11,7 @@ import PostUpvoter from '../components/PostUpvoter';
 import { GetStaticProps } from 'next';
 
 const Original = ({ initialApolloState: userData }) => {
-  // const  allPosts  = initialApolloState.ROOT_QUERY;
-
-  // const { data } = useAllPostsQuery({ variables: { skip: 0, first: 10 } });
-  // console.log(data);
-
   // const { data: userData } = useAllUsersQuery();
-
-  // console.log(userData);
 
   return (
     <div>
@@ -48,37 +41,18 @@ const Original = ({ initialApolloState: userData }) => {
 export const getStaticProps: GetStaticProps = async (_context) => {
   const apolloClient = initializeApollo();
 
-  // await apolloClient.query({
-  //   query: AllPostsDocument,
-  //   variables: { skip: 0, first: 10 },
-  // });
-
+  // この方法だとcacheされない
+  // 上でuseAllUsersQueryを使うとリクエストが走る
   const { data } = await apolloClient.query({
     query: AllUsersDocument,
   });
-
-  console.log(data?.allUsers);
-
-  // return {
-  //   props: {
-  //     initialApolloState: apolloClient.cache.extract(),
-  //   },
-  //   revalidate: 1,
-  // };
 
   return {
     props: {
       initialApolloState: data,
     },
-    // revalidate: 1,
+    revalidate: 1,
   };
-
-  // console.log(apolloClient.cache.extract());
-
-  // return addApolloState(apolloClient, {
-  //   props: {},
-  //   // revalidate: 1,
-  // });
 };
 
 export default Original;
