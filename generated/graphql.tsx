@@ -138,6 +138,19 @@ export type AllUsersQuery = (
   )> }
 );
 
+export type VotePostMutationVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type VotePostMutation = (
+  { __typename?: 'Mutation' }
+  & { votePost: (
+    { __typename?: 'Post' }
+    & Pick<Post, 'id' | 'votes'>
+  ) }
+);
+
 
 export const AllPostsDocument = gql`
     query AllPosts($first: Int!, $skip: Int!) {
@@ -217,3 +230,36 @@ export function useAllUsersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<A
 export type AllUsersQueryHookResult = ReturnType<typeof useAllUsersQuery>;
 export type AllUsersLazyQueryHookResult = ReturnType<typeof useAllUsersLazyQuery>;
 export type AllUsersQueryResult = Apollo.QueryResult<AllUsersQuery, AllUsersQueryVariables>;
+export const VotePostDocument = gql`
+    mutation VotePost($id: String!) {
+  votePost(id: $id) {
+    id
+    votes
+  }
+}
+    `;
+export type VotePostMutationFn = Apollo.MutationFunction<VotePostMutation, VotePostMutationVariables>;
+
+/**
+ * __useVotePostMutation__
+ *
+ * To run a mutation, you first call `useVotePostMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useVotePostMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [votePostMutation, { data, loading, error }] = useVotePostMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useVotePostMutation(baseOptions?: Apollo.MutationHookOptions<VotePostMutation, VotePostMutationVariables>) {
+        return Apollo.useMutation<VotePostMutation, VotePostMutationVariables>(VotePostDocument, baseOptions);
+      }
+export type VotePostMutationHookResult = ReturnType<typeof useVotePostMutation>;
+export type VotePostMutationResult = Apollo.MutationResult<VotePostMutation>;
+export type VotePostMutationOptions = Apollo.BaseMutationOptions<VotePostMutation, VotePostMutationVariables>;
